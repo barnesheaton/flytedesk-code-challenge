@@ -1,27 +1,34 @@
 <template>
-  <div class="school" v-bind:class="{ schoolSelected: isSelected() }">
-    <div class="checkbox">
-      <label class="checkboxLabel">
-        <input type="checkbox" :checked="selected" @change="onToggle">
-        <span></span>
-      </label>
+  <div>
+    <div
+      class="school"
+      v-bind:class="{ 'school-selected': isSelected(), 'school-last': isLastIndex() }"
+    >
+      <div class="checkbox">
+        <label class="checkbox-label">
+          <input type="checkbox" :checked="selected" @change="onToggle">
+          <span></span>
+        </label>
+      </div>
+      <div class="item">
+        <p>{{schoolData.name}}</p>
+      </div>
+      <div class="item">
+        <p>{{schoolData.city}}</p>
+      </div>
+      <div class="item">
+        <p>{{schoolData.state}}</p>
+      </div>
+      <div class="item">
+        <p>{{schoolData.zip}}</p>
+      </div>
+      <div class="action" v-on:click="togglePopup">
+        <font-awesome-icon icon="ellipsis-v" :style="{ color: '#5faee1' }"/>
+        <span class="popup">
+          <popup v-bind:onDelete="onDelete" v-bind:onEdit="onEdit"/>
+        </span>
+      </div>
     </div>
-    <div class="item">
-      <p>{{schoolData.name}}</p>
-    </div>
-    <div class="item">
-      <p>{{schoolData.city}}</p>
-    </div>
-    <div class="item">
-      <p>{{schoolData.state}}</p>
-    </div>
-    <div class="item">
-      <p>{{schoolData.zip}}</p>
-    </div>
-    <div class="action" v-on:click="togglePopup">
-      <font-awesome-icon icon="ellipsis-v" :style="{ color: '#5faee1' }"/>
-    </div>
-    <Popup v-show="isModalVisible" v-bind:onDelete="onDelete" v-bind:onEdit="onEdit"/>
   </div>
 </template>
 
@@ -38,8 +45,14 @@ export default {
     };
   },
   methods: {
-    togglePopup: function() {
-      this.isModalVisible = !this.isModalVisible;
+    isSelected: function() {
+      return this.selected;
+    },
+    isLastIndex: function() {
+      return this.isLastSchool;
+    },
+    isFirstIndex: function() {
+      return !this.index;
     },
     onToggle: function() {
       this.$emit("onToggle", this.schoolData.id);
@@ -50,16 +63,14 @@ export default {
     onEdit: function() {
       this.$emit("onEdit", this.schoolData.id);
     },
-    isSelected: function() {
-      return this.selected;
-    },
-    isFirstIndex: function() {
-      return !this.index;
+
+    togglePopup: function() {
+      this.isModalVisible = !this.isModalVisible;
     }
   },
   name: "School",
   props: {
-    index: Number,
+    isLastSchool: Boolean,
     schoolData: {
       id: Number,
       name: String,
@@ -75,25 +86,30 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .action {
-  border-right: solid #cdd4e3;
-  border-right-width: thin;
   align-items: center;
   display: flex;
   flex-basis: 100px;
   justify-content: center;
 }
+.action .popup {
+  visibility: hidden;
+  position: relative;
+  z-index: 1;
+}
+.action:hover .popup {
+  visibility: visible;
+}
 .checkbox {
-  border: solid #cdd4e3;
-  border-width: 0 thin 0 thin;
+  border-right: solid thin #cdd4e3;
   padding: 16px;
   display: flex;
   flex: 0;
   align-items: center;
 }
-.checkboxLabel input {
+.checkbox-label input {
   display: none;
 }
-.checkboxLabel span {
+.checkbox-label span {
   height: 12px;
   width: 12px;
   border-radius: 2px;
@@ -112,11 +128,15 @@ export default {
 }
 .school {
   display: flex;
-  border-bottom: solid #cdd4e3;
-  border-bottom-width: thin;
+  border: solid #cdd4e3;
+  border-width: 0 thin thin thin;
 }
-.schoolSelected {
+.school-selected {
   background: #eef0f5;
+}
+.school-last {
+  border-bottom-left-radius: 6px;
+  border-bottom-right-radius: 6px;
 }
 [type="checkbox"]:checked + span:before {
   content: "";

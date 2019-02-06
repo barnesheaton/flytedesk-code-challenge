@@ -2,23 +2,23 @@
   <div class="container">
     <div class="header">
       <div>
-        <h2 class="headerText">School Data</h2>
-        <p class="subHeaderText">Manage and export data for schools below</p>
+        <h2 class="header-text">School Data</h2>
+        <p class="header-subtext">Manage and export data for schools below</p>
       </div>
-      <button class="buttonText" v-on:click="openModal">Add New School</button>
+      <button class="button-text" v-on:click="openModal">Add New School</button>
     </div>
     <div class="toolbar">
-      <p class="selectedItems">{{selectedSchools.length}} Selected</p>
-      <button class="buttonIcon" v-on:click="deleteSelected">
+      <p class="item-selected">{{selectedSchools.length}} Selected</p>
+      <button class="button-icon" v-on:click="deleteSelected">
         <font-awesome-icon icon="trash-alt" :style="{ color: '#788193' }" size="2x"/>
       </button>
-      <button class="buttonIcon" v-on:click="exportCSV">
+      <button class="button-icon" v-on:click="exportCSV">
         <font-awesome-icon icon="file-download" :style="{ color: '#788193' }" size="2x"/>
       </button>
     </div>
-    <div class="labels">
+    <div class="table-header">
       <div class="checkbox">
-        <label class="checkboxLabel">
+        <label class="checkbox-label">
           <input type="checkbox" v-model="checked" @change="toggleAll">
           <span></span>
         </label>
@@ -45,7 +45,7 @@
         v-for="(school, index) in schools"
         v-bind:schoolData="school"
         v-bind:selected="selectedSchools.includes(school.id)"
-        v-bind:index="index"
+        v-bind:isLastSchool="index + 1 === schools.length"
         v-on:onDelete="onDelete"
         v-on:onEdit="onEdit(school)"
         v-on:onToggle="onToggle"
@@ -126,7 +126,7 @@ export default {
       if (this.editSchool) {
         this.schools[this.editSchool.id] = { ...data, id: this.editSchool.id };
       } else {
-        this.schools.push({ ...data, id: this.schools.length });
+        this.schools.unshift({ ...data, id: this.schools.length });
       }
       this.closeModal();
     },
@@ -153,14 +153,26 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.schools {
-  /* overflow: hidden; */
-}
 .action {
   border-right: solid #cdd4e3;
   border-right-width: thin;
   text-align: center;
   width: 100px;
+}
+.button-icon {
+  margin-left: 10px;
+  width: 40px;
+  height: 40px;
+  border: solid #cdd4e3;
+  border-width: thin;
+  border-radius: 4px;
+}
+.button-text {
+  background: #53bb77;
+  border: none;
+  border-radius: 4px;
+  color: #ffffff;
+  padding: 16px 32px;
 }
 .checkbox {
   border: solid #cdd4e3;
@@ -170,16 +182,65 @@ export default {
   flex: 0;
   align-items: center;
 }
-.checkboxLabel input {
+.checkbox-label input {
   display: none;
 }
-.checkboxLabel span {
+.checkbox-label span {
   height: 12px;
   width: 12px;
   border-radius: 2px;
   border: 1px solid grey;
   display: inline-block;
   position: relative;
+}
+.container {
+  padding: 50px 40px;
+}
+
+.header {
+  align-items: flex-start;
+  display: flex;
+  justify-content: space-between;
+}
+.header-text {
+  font-weight: bolder;
+  font-size: 24px;
+  line-height: 24px;
+  margin-bottom: 10px;
+}
+.header-subtext {
+  margin-top: 0px;
+  font-weight: normal;
+  line-height: 14px;
+}
+.item {
+  align-items: center;
+  flex: 1;
+  display: flex;
+  text-align: left;
+  border-right: solid #cdd4e3;
+  border-right-width: thin;
+  padding-left: 10px;
+}
+.item-selected {
+  font-weight: 400;
+  color: #5faee1;
+}
+.table-header {
+  overflow: hidden;
+  display: flex;
+  border: solid #cdd4e3;
+  border-width: thin 0 thin;
+  border-top-right-radius: 6px;
+  border-top-left-radius: 6px;
+  -webkit-box-shadow: 0 6px 4px -4px black;
+  -moz-box-shadow: 0 6px 4px -4px black;
+  box-shadow: 0 6px 4px -4px rgba(0, 0, 0, 0.2);
+}
+.toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin: 20px 0 20px 0;
 }
 [type="checkbox"]:checked + span:before {
   content: "";
@@ -197,64 +258,6 @@ export default {
 [type="checkbox"]:checked + span {
   border: 1px solid #5faee1;
   background: #5faee1;
-}
-.container {
-  padding: 50px 40px;
-}
-.header {
-  align-items: flex-start;
-  display: flex;
-  justify-content: space-between;
-}
-.labels {
-  overflow: hidden;
-  display: flex;
-  border: solid #cdd4e3;
-  border-width: thin 0 thin;
-  border-top-right-radius: 6px;
-  border-top-left-radius: 6px;
-  -webkit-box-shadow: 0 6px 4px -4px black;
-  -moz-box-shadow: 0 6px 4px -4px black;
-  box-shadow: 0 6px 4px -4px rgba(0, 0, 0, 0.2);
-}
-.toolbar {
-  display: flex;
-  justify-content: flex-end;
-  margin: 20px 0 20px 0;
-}
-.buttonIcon {
-  margin-left: 10px;
-  width: 40px;
-  height: 40px;
-  border: solid #cdd4e3;
-  border-width: thin;
-  border-radius: 4px;
-}
-.buttonText {
-  background: #53bb77;
-  border: none;
-  border-radius: 4px;
-  color: #ffffff;
-  padding: 16px 32px;
-}
-.item {
-  align-items: center;
-  flex: 1;
-  display: flex;
-  text-align: left;
-  border-right: solid #cdd4e3;
-  border-right-width: thin;
-  padding-left: 10px;
-}
-.selectedItems {
-  font-weight: 400;
-  color: #5faee1;
-}
-.headerText {
-  font-weight: 900;
-}
-.subHeaderText {
-  font-weight: 400;
 }
 p {
   font-weight: bold;

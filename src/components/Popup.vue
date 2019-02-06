@@ -1,9 +1,8 @@
 <template>
-  <div class="modal-container">
-    <div class="modal-pointer"/>
-    <div class="modal-content">
-      <button v-on:click="onEdit">Edit</button>
-      <button v-on:click="onDelete">Delete</button>
+  <div class="popup-container">
+    <div class="popup-content">
+      <button class="button" v-on:click="onEdit">Edit</button>
+      <button class="button" v-on:click="onDelete">Delete</button>
     </div>
   </div>
 </template>
@@ -21,23 +20,47 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.modal-pointer {
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-bottom: 5px solid white;
+.button {
+  text-align: left;
+  border: none;
+  margin-bottom: 16px;
 }
-
-.modal-container {
-  width: 50px;
-  margin: 0px auto;
-  padding: 20px 30px;
-  position: absolute;
+.popup-content {
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 0 16px;
   background-color: #fff;
+  border: solid thin #cdd4e3;
   border-radius: 4px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
-  transition: all 0.3s ease;
-  font-family: Helvetica, Arial, sans-serif;
+}
+.popup-container {
+  margin-top: 20px;
+  position: absolute;
+  right: -22px;
+}
+
+.popup-container:after,
+.popup-container:before {
+  content: "";
+  display: block;
+  position: absolute;
+  right: 15px;
+  bottom: 100%;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  transform: rotate(-90deg);
+}
+.popup-container:after {
+  top: -19px;
+  border-color: transparent transparent transparent white;
+  border-width: 10px;
+}
+.popup-container:before {
+  top: -21px;
+  right: 14px;
+  border-color: transparent transparent transparent #cdd4e3;
+  border-width: 11px;
 }
 </style>
