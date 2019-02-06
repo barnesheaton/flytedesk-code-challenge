@@ -1,29 +1,11 @@
 # flytedesk-challenge
 
-## Project setup
-```
-yarn install
-```
+### Prerequisites
 
-### Compiles and hot-reloads for development
-```
-yarn run serve
-```
+1. [Yarn](https://yarnpkg.com/en/docs/install#mac-stable)
 
-### Compiles and minifies for production
-```
-yarn run build
-```
-
-### Run your tests
-```
-yarn run test
-```
-
-### Lints and fixes files
-```
-yarn run lint
-```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+### How to Run
+1. Clone this repo and `cd` into it
+2. run `yarn`
+3. after that run `yarn serve`
+4. then open http://localhost:8080/ 
